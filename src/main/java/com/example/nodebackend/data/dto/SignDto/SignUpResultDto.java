@@ -15,5 +15,5 @@ public class SignUpResultDto {
     private int code;
 
     private String msg;
-    private String detailMessage; // 추가된 필드
+    private String detailMessage;
 }

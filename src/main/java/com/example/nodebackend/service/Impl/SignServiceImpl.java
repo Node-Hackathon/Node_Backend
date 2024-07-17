@@ -1,22 +1,24 @@
-package com.example.nodebackend.service.impl;
+package com.example.nodebackend.service.Impl;
 
+import com.example.nodebackend.S3.S3Uploader;
 import com.example.nodebackend.data.dao.SignDao;
 import com.example.nodebackend.data.dto.CommonResponse;
-import com.example.nodebackend.data.dto.SignDto.SignInResultDto;
-import com.example.nodebackend.data.dto.SignDto.SignUpDto;
-import com.example.nodebackend.data.dto.SignDto.SignUpResultDto;
-import com.example.nodebackend.data.dto.SignDto.SmsCertificationDto;
+import com.example.nodebackend.data.dto.SignDto.*;
 import com.example.nodebackend.data.entity.User;
 import com.example.nodebackend.data.repository.UserRepository;
 import com.example.nodebackend.jwt.JwtProvider;
 import com.example.nodebackend.service.SignService;
 import com.example.nodebackend.service.SmsService;
+import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Collections;
 
 @Service
@@ -27,6 +29,7 @@ public class SignServiceImpl implements SignService {
     private final PasswordEncoder passwordEncoder;
     private final SmsService smsService;
     private final SignDao signDao;
+    private final S3Uploader s3Uploader;
 
     private Logger logger = LoggerFactory.getLogger(SignServiceImpl.class);
 
@@ -34,13 +37,18 @@ public class SignServiceImpl implements SignService {
                            JwtProvider jwtProvider,
                            PasswordEncoder passwordEncoder,
                            SmsService smsService,
-                           SignDao signDao) {
+                           SignDao signDao,
+                           S3Uploader s3Uploader) {
         this.userRepository = userRepository;
         this.jwtProvider = jwtProvider;
         this.passwordEncoder = passwordEncoder;
         this.smsService = smsService;
         this.signDao = signDao;
+        this.s3Uploader = s3Uploader;
     }
+
+
+
 
     @Override
     public SignUpResultDto SignUpVerification(String certification, HttpServletRequest request) {
@@ -69,33 +77,83 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
-    public SignUpResultDto SignUp(SignUpDto signUpDto, HttpServletRequest request) {
+    public SignUpResultDto SignUpFirst(SignUpUserInfoDto signUpUserInfoDto, HttpServletRequest request) {
+        SignUpResultDto signUpResultDto = new SignUpResultDto();
+
+        User partialUser = (User) request.getSession().getAttribute("partialUser");
+
+        if (partialUser != null) {
+            // 기존 partialUser 업데이트
+            partialUser.setName(signUpUserInfoDto.getName());
+            partialUser.setAddress(signUpUserInfoDto.getAddress());
+            partialUser.setBirth(signUpUserInfoDto.getBirth());
+            partialUser.setGender(signUpUserInfoDto.getGender());
+            partialUser.setHeight(signUpUserInfoDto.getHeight());
+
+            logger.info("[user 정보 입력] : {} ", partialUser);
+
+            request.getSession().setAttribute("partialUser", partialUser);
+            signUpResultDto.setDetailMessage("다음 단계로 넘어가세요.");
+            setSuccess(signUpResultDto);
+        } else {
+           setFail(signUpResultDto);
+        }
+
+        return signUpResultDto;
+    }
+
+    @Override
+    public SignUpResultDto SignUpSecond(String userId, String password, String passwordCheck, MultipartFile profile_image, HttpServletRequest request) throws IOException {
         User partialUser = (User) request.getSession().getAttribute("partialUser");
 
         SignUpResultDto signUpResultDto = new SignUpResultDto();
-        if (partialUser != null) {
-            User user = User.builder()
-                    .userId(signUpDto.getUserId())
-                    .password(passwordEncoder.encode(signUpDto.getPassword()))
-                    .name(signUpDto.getName())
-                    .phone_num(partialUser.getPhone_num())
-                    .certification_num(true)
-                    .address(signUpDto.getAddress())
-                    .birth(signUpDto.getBirth())
-                    .gender(signUpDto.getGender())
-                    .height(signUpDto.getHeight())
-                    .guardian_name(signUpDto.getGuardian_name())
-                    .guardian_address(signUpDto.getGuardian_address())
-                    .guardian_phone_num(signUpDto.getGuardian_phone_num())
-                    .roles(Collections.singletonList("MEMBER"))
-                    .build();
-            logger.info("[user 정보 입력] : {} ", user);
 
-            signDao.SignUp(user);
-            signUpResultDto.setDetailMessage("회원가입 성공");
+        if (userRepository.existsByUserId(userId)) {
+            signUpResultDto.setDetailMessage("아이디가 중복되었습니다.");
+            setFail(signUpResultDto);
+            return signUpResultDto;
+        }
+
+        if (!password.equals(passwordCheck)) {
+            signUpResultDto.setDetailMessage("비밀번호가 일치하지 않습니다.");
+            setFail(signUpResultDto);
+            return signUpResultDto;
+        }
+
+        String imageUrl = s3Uploader.uploadImage(profile_image, "image/profile/");
+
+        if (partialUser != null) {
+            // 기존 partialUser 업데이트
+            partialUser.setUserId(userId);
+            partialUser.setPassword(passwordEncoder.encode(password));
+            partialUser.setPasswordCheck(passwordEncoder.encode(passwordCheck));
+            partialUser.setProfile_image_url(imageUrl);
+
+            request.getSession().setAttribute("partialUser", partialUser);
+            signUpResultDto.setDetailMessage("다음 단계로 넘어가세요.");
             setSuccess(signUpResultDto);
         } else {
-            signUpResultDto.setDetailMessage("회원가입 실패");
+            setFail(signUpResultDto);
+        }
+
+        return signUpResultDto;
+    }
+
+    @Override
+    public SignUpResultDto SignUpGuardian(SignUpGuardianInfoDto signUpGuardianInfoDto, HttpServletRequest request) {
+        User partialUser = (User) request.getSession().getAttribute("partialUser");
+        SignUpResultDto signUpResultDto = new SignUpResultDto();
+
+        if (partialUser != null) {
+            // 기존 partialUser 업데이트
+            partialUser.setGuardian_name(signUpGuardianInfoDto.getGuardian_name());
+            partialUser.setGuardian_phone_num(signUpGuardianInfoDto.getGuardian_phone_num());
+            partialUser.setGuardian_address(signUpGuardianInfoDto.getGuardian_address());
+
+            signDao.SignUp(partialUser);
+            signUpResultDto.setDetailMessage("회원 가입이 완료되었습니다.");
+            setSuccess(signUpResultDto);
+        } else {
             setFail(signUpResultDto);
         }
 

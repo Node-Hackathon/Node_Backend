@@ -4,7 +4,9 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,11 +54,21 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String passwordCheck;
+
     private String guardian_name;
 
-    private int guardian_phone_num;
+    private String guardian_phone_num;
 
     private String guardian_address;
+
+    @Transient // 데이터베이스에 저장하지 않음
+    private MultipartFile profile_image; // 이미지 파일을 업로드하기 위한 필드
+
+    @Column(nullable = true)
+    private String profile_image_url; // 이미지 파일의 경로를 저장하는 필드
+
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

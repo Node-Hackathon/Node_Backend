@@ -4,12 +4,10 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-
 @Data
 @Getter
 @Setter
-public class SignUpDto {
+public class SignUpUserInfoDto {
 
     private String name;
 
@@ -23,13 +21,4 @@ public class SignUpDto {
 
     private String address;
 
-    private String userId;
-
-    private String password;
-
-    private String guardian_name;
-
-    private int guardian_phone_num;
-
-    private String guardian_address;
 }
