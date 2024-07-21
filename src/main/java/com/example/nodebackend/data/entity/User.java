@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -43,7 +44,7 @@ public class User implements UserDetails {
     private String address;
 
     @Column(nullable = false,unique = true)
-    private String phone_num;
+    private String phoneNum;
 
     @Column(nullable = false)
     private boolean certification_num;
@@ -69,11 +70,15 @@ public class User implements UserDetails {
     @Column(nullable = true)
     private String profile_image_url; // 이미지 파일의 경로를 저장하는 필드
 
+    @Column(name="CREATED_AT")
+    private LocalDateTime createdAt;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>(List.of("MEMBER"));
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Block> blocks = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
@@ -84,7 +89,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.phone_num;
+        return this.phoneNum;
     }
 
     @Override

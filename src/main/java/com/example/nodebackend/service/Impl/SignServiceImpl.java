@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Collections;
 
 @Service
@@ -62,7 +63,7 @@ public class SignServiceImpl implements SignService {
         if (smsService.verifySms(certification, request)) {
             // 인증 성공 시 RDBMS에 전화번호 저장
             User user = User.builder()
-                    .phone_num(partialPhoneNum)
+                    .phoneNum(partialPhoneNum)
                     .certification_num(true)
                     .build();
             request.getSession().setAttribute("partialUser", user);
@@ -149,6 +150,7 @@ public class SignServiceImpl implements SignService {
             partialUser.setGuardian_name(signUpGuardianInfoDto.getGuardian_name());
             partialUser.setGuardian_phone_num(signUpGuardianInfoDto.getGuardian_phone_num());
             partialUser.setGuardian_address(signUpGuardianInfoDto.getGuardian_address());
+            partialUser.setCreatedAt(LocalDateTime.now());
 
             signDao.SignUp(partialUser);
             signUpResultDto.setDetailMessage("회원 가입이 완료되었습니다.");
@@ -170,7 +172,7 @@ public class SignServiceImpl implements SignService {
 
         logger.info("[getSignInResult] SignInResultDto 객체 생성");
         SignInResultDto signInResultDto = new SignInResultDto().builder()
-                .token(jwtProvider.createToken(String.valueOf(user.getPhone_num()), user.getRoles()))
+                .token(jwtProvider.createToken(String.valueOf(user.getPhoneNum()), user.getRoles()))
                 .build();
         logger.info("[getSignInResult] SignInResultDto 객체에 값 주입");
         setSuccess(signInResultDto);
