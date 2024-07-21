@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/sign-api")
@@ -32,14 +33,14 @@ public class SignController {
     }
 
     @PostMapping("/send-sms")
-    public ResponseEntity<String> sendSMS(String phone_num, HttpServletRequest request) {
+    public ResponseEntity<Map<String, String>> sendSMS(String phone_num, HttpServletRequest request) {
         try {
-            String randomNum = smsService.sendSMS(phone_num, request);
-            logger.info("[문자 인증 진행중] phoneNumber: {}, randomNum: {}", phone_num, randomNum);
-            return ResponseEntity.ok("문자 전송 완료: 인증번호 " + randomNum);
+            ResponseEntity<Map<String, String>> response = smsService.sendSMS(phone_num, request);
+            logger.info("[문자 인증 진행중] phoneNumber: {}, randomNum: {}", phone_num, response.getBody().get("certification_num"));
+            return response;
         } catch (Exception e) {
             logger.error("[문자 인증 실패] phoneNumber: {}, error: {}", phone_num, e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("문자 전송 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "문자 전송 실패"));
         }
     }
 

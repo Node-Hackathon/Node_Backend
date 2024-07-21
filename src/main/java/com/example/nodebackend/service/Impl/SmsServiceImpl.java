@@ -8,11 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.json.simple.JSONObject;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import net.nurigo.java_sdk.api.Message;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 @Service
@@ -59,29 +61,35 @@ public class SmsServiceImpl implements SmsService {
 
     //인증번호 전송하기
     @Override
-    public String sendSMS(String phone_num,HttpServletRequest request) {
-        Message message = new Message(apiKey,secretKey);
+    public ResponseEntity<Map<String, String>> sendSMS(String phone_num, HttpServletRequest request) {
+        Message message = new Message(apiKey, secretKey);
 
-        //랜덤한 인증 번호 생성
+        // 랜덤한 인증 번호 생성
         String randomNum = createRandomNumber();
         System.out.println(randomNum);
         request.getSession().setAttribute("partial_phone_num", phone_num);
 
-        //발신 정보 설정
-        HashMap<String,String> params = makeprams(phone_num,randomNum);
+        // 발신 정보 설정
+        HashMap<String, String> params = makeprams(phone_num, randomNum);
 
-        try{
+        try {
             JSONObject obj = (JSONObject) message.send(params);
             System.out.println(obj.toString());
-        }catch (CoolsmsException e){
+        } catch (CoolsmsException e) {
             System.out.println(e.getMessage());
             System.out.println(e.getCode());
         }
         // 데이터베이스에 발송한 인증번호 저장
         smsCertification.createSmsCertification(phone_num, String.valueOf(randomNum));
-        logger.info("[sms] phone_num : {} , randomNum : {} ",phone_num,randomNum);
-        return randomNum;
+        logger.info("[sms] phone_num : {} , randomNum : {} ", phone_num, randomNum);
+
+        // JSON 형식으로 응답 반환
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "문자 전송 완료");
+        response.put("certification_num", randomNum);
+        return ResponseEntity.ok(response);
     }
+
 
     // 인증 번호 검증
 // 인증 번호 검증

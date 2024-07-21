@@ -42,7 +42,8 @@ public class SecurityConfig extends  WebSecurityConfigurerAdapter{
                 .sessionManagement()
                 .sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS) // JWT Token 인증방식으로 세션은 필요 없으므로 비활성화
-
+                .and()
+                .cors()
                 .and()
                 .authorizeRequests() // 리퀘스트에 대한 사용권한 체크
                 .antMatchers("/sign-api/**",
