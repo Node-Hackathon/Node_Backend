@@ -27,11 +27,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtProvider {
 
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    public JwtProvider(UserDetailsService userDetailsService){
-        this.userDetailsService = userDetailsService;
-    }
 
     private Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 
@@ -65,8 +62,8 @@ public class JwtProvider {
     }
 
     // jwt토큰 생성
-    public String createToken(String phone_num, List<String> roles){
-        Claims claims = Jwts.claims().setSubject(phone_num);
+    public String createToken(String phoneNum, List<String> roles){
+        Claims claims = Jwts.claims().setSubject(phoneNum);
         claims.put("roles",roles);
 
         Date now = new Date();
@@ -96,6 +93,7 @@ public class JwtProvider {
 
         return info;
     }
+
 
     // HTTP 헤더 정보에 X-AUTH-TOKEN 전달
     public String resolveToken(HttpServletRequest request){
