@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -46,8 +47,8 @@ public class BlockServiceImpl implements BlockService {
         this.userRepository = userRepository;
     }
 
-
     @Override
+    @Transactional
     public BlockResponseDto BlockStacking(MultipartFile blockImage, HttpServletRequest request) throws IOException {
         BlockResponseDto blockResponseDto = null;
 
@@ -63,7 +64,7 @@ public class BlockServiceImpl implements BlockService {
                     .retrieve()
                     .bodyToMono(BlockResponseDto.class);
 
-            blockResponseDto = response.block();
+            blockResponseDto = response.block(); // blocking call
             logger.info("Received Response: {}", blockResponseDto);
 
             if (blockResponseDto != null) {
@@ -78,7 +79,6 @@ public class BlockServiceImpl implements BlockService {
                 block.setCount(blockResponseDto.getCount());
                 block.setCreatedAt(LocalDateTime.now());
 
-
                 blockDao.saveBlock(block);
                 logger.info("Saved Block: {}", block);
             }
@@ -88,5 +88,4 @@ public class BlockServiceImpl implements BlockService {
 
         return blockResponseDto;
     }
-
 }

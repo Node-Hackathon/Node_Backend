@@ -9,18 +9,16 @@ import com.example.nodebackend.data.repository.UserRepository;
 import com.example.nodebackend.jwt.JwtProvider;
 import com.example.nodebackend.service.SignService;
 import com.example.nodebackend.service.SmsService;
-import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Collections;
 
 @Service
 public class SignServiceImpl implements SignService {
@@ -48,10 +46,8 @@ public class SignServiceImpl implements SignService {
         this.s3Uploader = s3Uploader;
     }
 
-
-
-
     @Override
+    @Transactional
     public SignUpResultDto SignUpVerification(String certification, HttpServletRequest request) {
         String partialPhoneNum = (String) request.getSession().getAttribute("partial_phone_num");
         SignUpResultDto signUpResultDto = new SignUpResultDto();
@@ -78,6 +74,7 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
+    @Transactional
     public SignUpResultDto SignUpFirst(SignUpUserInfoDto signUpUserInfoDto, HttpServletRequest request) {
         SignUpResultDto signUpResultDto = new SignUpResultDto();
 
@@ -97,13 +94,14 @@ public class SignServiceImpl implements SignService {
             signUpResultDto.setDetailMessage("다음 단계로 넘어가세요.");
             setSuccess(signUpResultDto);
         } else {
-           setFail(signUpResultDto);
+            setFail(signUpResultDto);
         }
 
         return signUpResultDto;
     }
 
     @Override
+    @Transactional
     public SignUpResultDto SignUpSecond(String userId, String password, String passwordCheck, MultipartFile profile_image, HttpServletRequest request) throws IOException {
         User partialUser = (User) request.getSession().getAttribute("partialUser");
 
@@ -141,6 +139,7 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
+    @Transactional
     public SignUpResultDto SignUpGuardian(SignUpGuardianInfoDto signUpGuardianInfoDto, HttpServletRequest request) {
         User partialUser = (User) request.getSession().getAttribute("partialUser");
         SignUpResultDto signUpResultDto = new SignUpResultDto();
@@ -163,6 +162,7 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
+    @Transactional
     public SignInResultDto SignIn(String userId, String password) {
         User user = userRepository.getByUserId(userId);
         if (!passwordEncoder.matches(password, user.getPassword())) {

@@ -12,4 +12,13 @@ public class TestController {
     public String test(){
         return "Test 입니다.";
     }
+
+
+    @GetMapping("/test2")
+    public String test2(){
+        return "a";
+
+    }
+
+
 }
