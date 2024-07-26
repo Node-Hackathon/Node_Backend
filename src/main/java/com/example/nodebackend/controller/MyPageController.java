@@ -7,6 +7,7 @@ import com.example.nodebackend.data.repository.UserRepository;
 import com.example.nodebackend.jwt.JwtProvider;
 import com.example.nodebackend.mapper.MyPageGuardianMapper;
 import com.example.nodebackend.mapper.MyPageUserMapper;
+import com.example.nodebackend.service.Impl.MyPageUserServiceImpl;
 import com.example.nodebackend.service.MyPageUserService;
 import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public class MyPageController {
 
     @Autowired
-    private MyPageUserService myPageUserService;
+    private MyPageUserServiceImpl myPageUserServiceImpl;
 
     @Autowired
     private UserRepository userRepository;
@@ -40,7 +41,7 @@ public class MyPageController {
         }
 
         Long id = user.getId();
-        var userDetails = myPageUserService.getUserById(id);
+        var userDetails = myPageUserServiceImpl.getUserById(id);
 
         return userDetails.map(value -> ResponseEntity.ok(MyPageUserMapper.toDto(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -80,7 +81,7 @@ public class MyPageController {
         }
 
         Long id = user.getId();
-        var userDetails = myPageUserService.getUserById(id);
+        var userDetails = myPageUserServiceImpl.getUserById(id);
 
         return userDetails.map(value -> ResponseEntity.ok(MyPageGuardianMapper.toDto(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
