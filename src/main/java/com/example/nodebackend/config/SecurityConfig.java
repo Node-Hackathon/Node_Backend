@@ -49,7 +49,9 @@ public class SecurityConfig extends  WebSecurityConfigurerAdapter{
                 .antMatchers("/sign-api/**",
                         "/sign-api/exception","/main-api/**").permitAll() // 가입 및 로그인 주소는 허용
                 .antMatchers("/4d-api/**").authenticated()
+                .antMatchers("/center-api/**").authenticated()
                 .antMatchers("**exception**").permitAll()
+
 
                 .and()
                 .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())

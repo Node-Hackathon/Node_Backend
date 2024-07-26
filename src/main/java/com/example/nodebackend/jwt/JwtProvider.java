@@ -29,8 +29,7 @@ public class JwtProvider {
 
     private final UserDetailsService userDetailsService;
 
-
-    private Logger logger = LoggerFactory.getLogger(JwtProvider.class);
+    private final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 
 
     @Value("${springboot.jwt.secret}")  // 시크릿 키
