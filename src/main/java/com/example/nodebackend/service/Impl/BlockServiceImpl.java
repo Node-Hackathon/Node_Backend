@@ -84,6 +84,7 @@ public class BlockServiceImpl implements BlockService {
             }
         } catch (WebClientResponseException | IOException e) {
             logger.error("Error occurred while fetching results: ", e);
+            e.printStackTrace();
         }
 
         return blockResponseDto;

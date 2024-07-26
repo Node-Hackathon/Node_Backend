@@ -1,9 +1,11 @@
 package com.example.nodebackend.controller;
 
 import com.example.nodebackend.data.dto.BlockDto.BlockResponseDto;
-import com.example.nodebackend.data.entity.Block;
+import com.example.nodebackend.data.dto.CompositionDto.CompositionResponseDto;
 import com.example.nodebackend.service.BlockService;
+import com.example.nodebackend.service.ComposistionService;
 import io.swagger.annotations.ApiImplicitParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +17,29 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/4d-api")
-public class BlockController {
+@RequiredArgsConstructor
+public class FdController {
 
-    @Autowired
-    private BlockService blockService;
+    private final BlockService blockService;
+    private final ComposistionService composistionService;
+
     @ApiImplicitParam(name = "X-AUTH-TOKEN",value="로그인 성공 후 발급 받은 access_token", required = true, dataType ="String",paramType = "header")
     @PostMapping("/block")
-    public ResponseEntity<BlockResponseDto> uploadFiles(
+    public ResponseEntity<BlockResponseDto> BlockPlay(
             @RequestPart("blockImage")MultipartFile blockImage, HttpServletRequest request) throws IOException {
 
         BlockResponseDto results = blockService.BlockStacking(blockImage,request);
         return ResponseEntity.status(HttpStatus.OK).body(results);
+
+    }
+
+    @ApiImplicitParam(name = "X-AUTH-TOKEN",value="로그인 성공 후 발급 받은 access_token", required = true, dataType ="String",paramType = "header")
+    @PostMapping("/composition")
+    public ResponseEntity<CompositionResponseDto> CompositionPlay(
+            @RequestPart("composition_image")MultipartFile composition_image, HttpServletRequest request) throws IOException {
+
+        CompositionResponseDto compositionResponseDto = composistionService.CompositionPlay(composition_image,request);
+        return ResponseEntity.status(HttpStatus.OK).body(compositionResponseDto);
 
     }
 

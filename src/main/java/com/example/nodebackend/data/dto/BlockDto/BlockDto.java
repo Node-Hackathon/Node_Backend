@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BlockDto {
+
     private String name;
     private String accuracy;
 
