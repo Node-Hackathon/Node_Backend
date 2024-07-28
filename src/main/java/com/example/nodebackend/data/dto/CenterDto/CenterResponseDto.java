@@ -1,4 +1,4 @@
-package com.example.nodebackend.data.dto.Center;
+package com.example.nodebackend.data.dto.CenterDto;
 
 import lombok.Getter;
 import lombok.Setter;

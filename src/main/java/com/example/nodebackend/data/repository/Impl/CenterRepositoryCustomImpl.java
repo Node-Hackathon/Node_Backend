@@ -1,7 +1,8 @@
-package com.example.nodebackend.data.repository;
+package com.example.nodebackend.data.repository.Impl;
 
 import com.example.nodebackend.data.entity.Center;
 import com.example.nodebackend.data.entity.QCenter;
+import com.example.nodebackend.data.repository.CenterRepositoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
