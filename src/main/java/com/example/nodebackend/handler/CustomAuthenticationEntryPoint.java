@@ -15,7 +15,7 @@ import java.io.IOException;
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private Logger logger = LoggerFactory.getLogger(CustomAuthenticationEntryPoint.class);
+    private final Logger logger = LoggerFactory.getLogger(CustomAuthenticationEntryPoint.class);
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)

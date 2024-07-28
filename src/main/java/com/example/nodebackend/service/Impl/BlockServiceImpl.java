@@ -36,7 +36,7 @@ public class BlockServiceImpl implements BlockService {
     private final WebClient webClient;
     private final BlockDao blockDao;
 
-    private Logger logger = LoggerFactory.getLogger(BlockResponseDto.class);
+    private final Logger logger = LoggerFactory.getLogger(BlockResponseDto.class);
 
     public BlockServiceImpl(S3Uploader s3Uploader, JwtProvider jwtProvider, BlockRepository blockRepository, WebClient.Builder webClientBuilder, BlockDao blockDao,UserRepository userRepository) {
         this.s3Uploader = s3Uploader;

@@ -19,7 +19,7 @@ import java.util.Random;
 
 @Service
 public class SmsServiceImpl implements SmsService {
-    private Logger logger = LoggerFactory.getLogger(SmsService.class);
+    private final Logger logger = LoggerFactory.getLogger(SmsService.class);
 
     private final SmsCertification smsCertification;
 
@@ -73,7 +73,7 @@ public class SmsServiceImpl implements SmsService {
         HashMap<String, String> params = makeprams(phone_num, randomNum);
 
         try {
-            JSONObject obj = (JSONObject) message.send(params);
+            JSONObject obj = message.send(params);
             System.out.println(obj.toString());
         } catch (CoolsmsException e) {
             System.out.println(e.getMessage());

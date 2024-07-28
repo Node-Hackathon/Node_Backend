@@ -30,7 +30,7 @@ public class SignServiceImpl implements SignService {
     private final SignDao signDao;
     private final S3Uploader s3Uploader;
 
-    private Logger logger = LoggerFactory.getLogger(SignServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(SignServiceImpl.class);
 
     public SignServiceImpl(UserRepository userRepository,
                            JwtProvider jwtProvider,
@@ -87,6 +87,7 @@ public class SignServiceImpl implements SignService {
             partialUser.setBirth(signUpUserInfoDto.getBirth());
             partialUser.setGender(signUpUserInfoDto.getGender());
             partialUser.setHeight(signUpUserInfoDto.getHeight());
+            partialUser.setWeight(signUpUserInfoDto.getHeight());
 
             logger.info("[user 정보 입력] : {} ", partialUser);
 
