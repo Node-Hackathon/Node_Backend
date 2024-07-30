@@ -1,4 +1,4 @@
-package com.example.nodebackend.data.dao.impl;
+package com.example.nodebackend.data.dao.Impl;
 
 import com.example.nodebackend.data.dao.DiagnosisDao;
 import com.example.nodebackend.data.entity.Diagnosis;

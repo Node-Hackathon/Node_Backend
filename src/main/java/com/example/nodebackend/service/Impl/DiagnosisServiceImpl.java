@@ -1,4 +1,4 @@
-package com.example.nodebackend.service.impl;
+package com.example.nodebackend.service.Impl;
 
 import com.example.nodebackend.data.entity.Diagnosis;
 import com.example.nodebackend.data.repository.DiagnosisRepository;
