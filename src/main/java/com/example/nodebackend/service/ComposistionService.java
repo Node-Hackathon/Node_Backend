@@ -5,10 +5,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Map;
 
 public interface ComposistionService {
 
     CompositionResponseDto CompositionPlay(MultipartFile composition_image, HttpServletRequest request)throws IOException;
-    String getRandomSentence( );
+    Map<String, String> getRandomCompositionSentence();
 
 }

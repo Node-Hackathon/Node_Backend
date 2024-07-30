@@ -24,9 +24,7 @@ import reactor.core.publisher.Mono;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -80,8 +78,11 @@ public class CompositionServiceImpl implements ComposistionService {
     }
 
     @Override
-    public String getRandomSentence() {
-        return compositionSentences.get(random.nextInt(compositionSentences.size()));
+    public Map<String, String> getRandomCompositionSentence(){
+        String sentence = compositionSentences.get(random.nextInt(compositionSentences.size()));
+        Map<String, String> compositionSentencesResponse = new HashMap<>();
+        compositionSentencesResponse.put("sentence", sentence);
+        return compositionSentencesResponse;
     }
 
     @Override

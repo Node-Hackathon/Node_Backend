@@ -37,7 +37,7 @@ public class BlockServiceImpl implements BlockService {
     private final BlockDao blockDao;
 
     private final Logger logger = LoggerFactory.getLogger(BlockResponseDto.class);
-
+    private final Random random = new Random();
     public BlockServiceImpl(S3Uploader s3Uploader, JwtProvider jwtProvider, BlockRepository blockRepository, WebClient.Builder webClientBuilder, BlockDao blockDao,UserRepository userRepository) {
         this.s3Uploader = s3Uploader;
         this.jwtProvider = jwtProvider;
@@ -45,6 +45,38 @@ public class BlockServiceImpl implements BlockService {
         this.webClient = webClientBuilder.baseUrl("http://43.203.212.168:8000").build();
         this.blockDao = blockDao;
         this.userRepository = userRepository;
+    }
+    public static final List<String> blockSentences = new ArrayList<>();
+
+    static {
+        blockSentences.add("4D 블럭을 활용하여 계단 조합을 만들어 보세요!");
+        blockSentences.add("4D 블럭을 활용하여 기댐 조합을 만들어 보세요!");
+        blockSentences.add("4D 블럭을 활용하여 교차 조합을 만들어 보세요!");
+        blockSentences.add("4D 블럭을 활용하여 모아 조합을 만들어 보세요!");
+        blockSentences.add("4D 블럭을 활용하여 비스듬 조합을 만들어 보세요!");
+        blockSentences.add("4D 블럭을 활용하여 지그재그 조합을 만들어 보세요!");
+        blockSentences.add("4D 블럭을 활용하여 틀어 조합을 만들어 보세요!");
+        blockSentences.add("4D 블럭을 활용하여 돌려 조합을 만들어 보세요!");
+        blockSentences.add("4D 블럭을 활용하여 세워 조합을 만들어 보세요!");
+        blockSentences.add("4D 블럭을 활용하여 기본 조합을 만들어 보세요!");
+        blockSentences.add("2개의 조합을 사용하여 4D 블럭을 쌓아보세요!");
+        blockSentences.add("3개의 조합을 사용하여 4D 블럭을 쌓아보세요!");
+        blockSentences.add("4개의 조합을 사용하여 4D 블럭을 쌓아보세요!");
+        blockSentences.add("5개의 조합을 사용하여 4D 블럭을 쌓아보세요!");
+        blockSentences.add("6개의 조합을 사용하여 4D 블럭을 쌓아보세요!");
+        blockSentences.add("7개의 조합을 사용하여 4D 블럭을 쌓아보세요!");
+        blockSentences.add("8개의 조합을 사용하여 4D 블럭을 쌓아보세요!");
+        blockSentences.add("9개의 조합을 사용하여 4D 블럭을 쌓아보세요!");
+        blockSentences.add("10개의 조합을 사용하여 4D 블럭을 쌓아보세요!");
+        blockSentences.add("자율적으로 다양한 조합을 사용하여 4D 블럭을 쌓아보세요!");
+    }
+
+    @Override
+    public Map<String, String> getRandomBlockSentence() {
+        String sentence = blockSentences.get(random.nextInt(blockSentences.size()));
+        Map<String, String> blockSentenceresponse = new HashMap<>();
+        blockSentenceresponse.put("RandomBlockSentence", sentence);
+        return blockSentenceresponse;
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/4d-api")
@@ -32,6 +33,14 @@ public class FdController {
 
     }
 
+
+    @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    @PostMapping("/block-sentences")
+    public ResponseEntity<Map<String, String>> getRandomBlcokSentence() {
+        Map<String, String> block_sentence = blockService.getRandomBlockSentence();
+        return ResponseEntity.status(HttpStatus.OK).body(block_sentence);
+    }
+
     @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     @PostMapping("/composition")
     public ResponseEntity<CompositionResponseDto> CompositionPlay(
@@ -44,10 +53,8 @@ public class FdController {
 
     @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     @PostMapping("/composition-sentences")
-    public ResponseEntity<String> getRandomSentence() {
-
-        String sentences = composistionService.getRandomSentence();
-        return ResponseEntity.status(HttpStatus.OK).body(sentences);
-
+    public ResponseEntity<Map<String, String>> getRandomCompositonSentence() {
+        Map<String, String> composition_sentence = composistionService.getRandomCompositionSentence();
+        return ResponseEntity.status(HttpStatus.OK).body(composition_sentence);
     }
 }
