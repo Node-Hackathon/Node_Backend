@@ -9,6 +9,6 @@ import java.io.IOException;
 public interface ComposistionService {
 
     CompositionResponseDto CompositionPlay(MultipartFile composition_image, HttpServletRequest request)throws IOException;
-
+    String getRandomSentence( );
 
 }

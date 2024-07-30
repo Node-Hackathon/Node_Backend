@@ -24,6 +24,9 @@ import reactor.core.publisher.Mono;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Service
 @Slf4j
@@ -43,7 +46,7 @@ public class CompositionServiceImpl implements ComposistionService {
     private final WebClient webClient;
 
     private final Logger logger = LoggerFactory.getLogger(CompositionServiceImpl.class);
-
+    private final Random random = new Random();
     public CompositionServiceImpl(S3Uploader s3Uploader, JwtProvider jwtProvider,
                                   CompositionRepository compositionRepository, UserRepository userRepository,
                                   CompositionDao compositionDao, WebClient.Builder webClientBuilder) {
@@ -53,6 +56,32 @@ public class CompositionServiceImpl implements ComposistionService {
         this.userRepository = userRepository;
         this.compositionDao = compositionDao;
         this.webClient = webClientBuilder.baseUrl("http://43.203.212.168:8001").build();
+    }
+
+    public static final List<String> compositionSentences = new ArrayList<>();
+
+    static {
+        compositionSentences.add("4D 블럭을 활용하여 자신만의 캐릭터를 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 오리를 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 첨성대를 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 '봄' 글자를 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 돛단배를 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 '화분을 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 태극기를 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 하트를 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 다양한 패턴을 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 달팽이를 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 발바닥을 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 헬리콥터를 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 얼굴을 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 강아지를 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 새를 만들어 보세요!");
+        compositionSentences.add("4D 블럭을 활용하여 삼지창을 만들어 보세요!");
+    }
+
+    @Override
+    public String getRandomSentence() {
+        return compositionSentences.get(random.nextInt(compositionSentences.size()));
     }
 
     @Override
