@@ -6,14 +6,14 @@ import com.example.nodebackend.data.entity.User;
 import com.example.nodebackend.data.repository.UserRepository;
 import com.example.nodebackend.mapper.MyPageGuardianMapper;
 import com.example.nodebackend.mapper.MyPageUserMapper;
-import com.example.nodebackend.service.MyPageUserService;
+import com.example.nodebackend.service.MyPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class MyPageUserServiceImpl implements MyPageUserService{
+public class MyPageServiceImpl implements MyPageService {
 
     @Autowired
     private UserRepository userRepository;
@@ -39,7 +39,7 @@ public class MyPageUserServiceImpl implements MyPageUserService{
             userRepository.save(user);
             return MyPageUserMapper.toDto(user);
         }
-        return null; // 혹은 custom 예외 발생
+        return null;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class MyPageUserServiceImpl implements MyPageUserService{
             userRepository.save(user);
             return MyPageGuardianMapper.toDto(user);
         }
-        return null; // 혹은 custom 예외 발생
+        return null;
     }
 
 }
