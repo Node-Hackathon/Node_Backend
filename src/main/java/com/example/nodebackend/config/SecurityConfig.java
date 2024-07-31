@@ -53,8 +53,6 @@ public class SecurityConfig extends  WebSecurityConfigurerAdapter{
                 .antMatchers("/cardgame-api/**").authenticated()
                 .antMatchers("/numbergame-api/**").authenticated()
                 .antMatchers("**exception**").permitAll()
-
-
                 .and()
                 .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
                 .and()
