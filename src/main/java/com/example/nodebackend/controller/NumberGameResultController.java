@@ -1,12 +1,12 @@
 package com.example.nodebackend.controller;
 
-import com.example.nodebackend.data.dto.GameResultDto.CardGameResultDto;
-import com.example.nodebackend.data.dto.GameResultDto.CardGameResultResponseDto;
-import com.example.nodebackend.data.entity.CardGameResult;
+import com.example.nodebackend.data.dto.GameResultDto.NumberGameResultDto;
+import com.example.nodebackend.data.dto.GameResultDto.NumberGameResultResponseDto;
+import com.example.nodebackend.data.entity.NumberGameResult;
 import com.example.nodebackend.data.entity.User;
 import com.example.nodebackend.data.repository.UserRepository;
 import com.example.nodebackend.jwt.JwtProvider;
-import com.example.nodebackend.service.CardGameResultService;
+import com.example.nodebackend.service.NumberGameResultService;
 import io.swagger.annotations.ApiImplicitParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,30 +14,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.Comparator;
 
 @RestController
-@RequestMapping("/cardgame-api")
-public class CardGameResultController {
-    private final Logger logger = LoggerFactory.getLogger(CardGameResultController.class);
-    private final CardGameResultService cardGameResultService;
+@RequestMapping("/numbergame-api")
+public class NumberGameResultController {
+    private final Logger logger = LoggerFactory.getLogger(NumberGameResultController.class);
+    private final NumberGameResultService numberGameResultService;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
 
     @Autowired
-    public CardGameResultController(CardGameResultService cardGameResultService, UserRepository userRepository, JwtProvider jwtProvider) {
-        this.cardGameResultService = cardGameResultService;
+    public NumberGameResultController(NumberGameResultService numberGameResultService, UserRepository userRepository, JwtProvider jwtProvider) {
+        this.numberGameResultService = numberGameResultService;
         this.userRepository = userRepository;
         this.jwtProvider = jwtProvider;
     }
 
     @PostMapping("/update")
     @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
-    public ResponseEntity<CardGameResultResponseDto> createCardGameResult(@RequestBody CardGameResultDto cardGameResultDto, HttpServletRequest request) {
+    public ResponseEntity<NumberGameResultResponseDto> createNumberGameResult(@RequestBody NumberGameResultDto numberGameResultDto, HttpServletRequest request) {
         String token = request.getHeader("X-AUTH-TOKEN");
         String phoneNum = jwtProvider.getUsername(token);
         User user = userRepository.findByPhoneNum(phoneNum);
@@ -46,31 +47,31 @@ public class CardGameResultController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        CardGameResult cardGameResult = CardGameResult.builder()
-                .stage(cardGameResultDto.getStage())
+        NumberGameResult numberGameResult = NumberGameResult.builder()
+                .stage(numberGameResultDto.getStage())
                 .date(LocalDate.now())
                 .user(user)
                 .build();
-        CardGameResult savedCardGameResult = cardGameResultService.createCardGameResult(cardGameResult);
+        NumberGameResult savedNumberGameResult = numberGameResultService.createNumberGameResult(numberGameResult);
 
-        logger.info("카드 맞추기 게임 결과 id: {}, date: {}, score: {}, userId: {}",
-                savedCardGameResult.getId(),
-                savedCardGameResult.getDate(),
-                savedCardGameResult.getStage(),
-                savedCardGameResult.getUser().getId());
+        logger.info("숫자 맞추기 게임 결과 id: {}, date: {}, score: {}, userId: {}",
+                savedNumberGameResult.getId(),
+                savedNumberGameResult.getDate(),
+                savedNumberGameResult.getStage(),
+                savedNumberGameResult.getUser().getId());
 
-        CardGameResultResponseDto responseDto = new CardGameResultResponseDto();
-        responseDto.setId(savedCardGameResult.getId());
-        responseDto.setStage(savedCardGameResult.getStage());
-        responseDto.setDate(savedCardGameResult.getDate());
-        responseDto.setUserId(savedCardGameResult.getUser().getId());
+        NumberGameResultResponseDto responseDto = new NumberGameResultResponseDto();
+        responseDto.setId(savedNumberGameResult.getId());
+        responseDto.setStage(savedNumberGameResult.getStage());
+        responseDto.setDate(savedNumberGameResult.getDate());
+        responseDto.setUserId(savedNumberGameResult.getUser().getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
     @GetMapping("/compare")
     @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
-    public ResponseEntity<String> compareLastResults(HttpServletRequest request) {
+    public ResponseEntity<String> compareNumberGameResult(HttpServletRequest request) {
         String token = request.getHeader("X-AUTH-TOKEN");
         String phoneNum = jwtProvider.getUsername(token);
         User user = userRepository.findByPhoneNum(phoneNum);
@@ -80,10 +81,10 @@ public class CardGameResultController {
         }
 
         Long userId = user.getId();
-        List<CardGameResult> userResults = cardGameResultService.getCardGameResultsByUserId(userId);
+        List<NumberGameResult> userResults = numberGameResultService.getNumberGameResultsByUserId(userId);
 
-        List<CardGameResult> recentResults = userResults.stream()
-                .sorted(Comparator.comparing(CardGameResult::getId).reversed())
+        List<NumberGameResult> recentResults = userResults.stream()
+                .sorted(Comparator.comparing(NumberGameResult::getId).reversed())
                 .limit(2)
                 .collect(Collectors.toList());
 
@@ -109,7 +110,7 @@ public class CardGameResultController {
 
     @GetMapping("/inquiry-all")
     @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
-    public ResponseEntity<List<CardGameResultResponseDto>> getCardGameResultsByUser(HttpServletRequest request) {
+    public ResponseEntity<List<NumberGameResultResponseDto>> getNumberGameResultsByUser(HttpServletRequest request){
         String token = request.getHeader("X-AUTH-TOKEN");
         String phoneNum = jwtProvider.getUsername(token); //
         User user = userRepository.findByPhoneNum(phoneNum);
@@ -119,11 +120,11 @@ public class CardGameResultController {
         }
 
         Long userId = user.getId();
-        List<CardGameResult> userDetails = cardGameResultService.getCardGameResultsByUserId(userId);
+        List<NumberGameResult> userDetails = numberGameResultService.getNumberGameResultsByUserId(userId);
 
-        List<CardGameResultResponseDto> responseDtos = userDetails.stream()
+        List<NumberGameResultResponseDto> responseDtos = userDetails.stream()
                 .map(result -> {
-                    CardGameResultResponseDto dto = new CardGameResultResponseDto();
+                    NumberGameResultResponseDto dto = new NumberGameResultResponseDto();
                     dto.setId(result.getId());
                     dto.setStage(result.getStage());
                     dto.setDate(result.getDate());
@@ -134,10 +135,9 @@ public class CardGameResultController {
 
         return ResponseEntity.ok(responseDtos);
     }
-
     @GetMapping("/inquiry-five")
     @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
-    public ResponseEntity<List<CardGameResultResponseDto>> getRecentCardGameResults(HttpServletRequest request) {
+    public ResponseEntity<List<NumberGameResultResponseDto>> getRecentNumberGameResults(HttpServletRequest request){
         String token = request.getHeader("X-AUTH-TOKEN");
         String phoneNum = jwtProvider.getUsername(token);
         User user = userRepository.findByPhoneNum(phoneNum);
@@ -147,20 +147,19 @@ public class CardGameResultController {
         }
 
         Long userId = user.getId();
-        List<CardGameResult> userResults = cardGameResultService.getCardGameResultsByUserId(userId);
+        List<NumberGameResult> userResults = numberGameResultService.getNumberGameResultsByUserId(userId);
 
         if (userResults.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-
-        List<CardGameResult> recentResults = userResults.stream()
-                .sorted(Comparator.comparing(CardGameResult::getId).reversed())
+        List<NumberGameResult> recentResults = userResults.stream()
+                .sorted(Comparator.comparing(NumberGameResult::getId).reversed())
                 .limit(5)
                 .collect(Collectors.toList());
 
-        List<CardGameResultResponseDto> responseDtos = recentResults.stream()
+        List<NumberGameResultResponseDto> responseDtos = recentResults.stream()
                 .map(result -> {
-                    CardGameResultResponseDto dto = new CardGameResultResponseDto();
+                    NumberGameResultResponseDto dto = new NumberGameResultResponseDto();
                     dto.setId(result.getId());
                     dto.setStage(result.getStage());
                     dto.setDate(result.getDate());

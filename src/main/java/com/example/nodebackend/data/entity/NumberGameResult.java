@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CardGameResult {
+public class NumberGameResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

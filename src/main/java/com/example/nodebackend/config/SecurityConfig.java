@@ -50,6 +50,8 @@ public class SecurityConfig extends  WebSecurityConfigurerAdapter{
                         "/sign-api/exception","/main-api/**").permitAll() // 가입 및 로그인 주소는 허용
                 .antMatchers("/4d-api/**").authenticated()
                 .antMatchers("/center-api/**").authenticated()
+                .antMatchers("/cardgame-api/**").authenticated()
+                .antMatchers("/numbergame-api/**").authenticated()
                 .antMatchers("**exception**").permitAll()
 
 

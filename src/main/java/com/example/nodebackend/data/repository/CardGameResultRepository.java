@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CardGameResultRepository extends JpaRepository<CardGameResult,Long> {
     List<CardGameResult> findByUserId(Long userId);
+    List<CardGameResult> findByUserIdAndStageIn(Long userId, List<Integer> stages);
 }

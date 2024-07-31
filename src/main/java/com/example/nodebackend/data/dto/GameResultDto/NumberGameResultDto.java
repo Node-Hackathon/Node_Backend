@@ -1,9 +1,10 @@
 package com.example.nodebackend.data.dto.GameResultDto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
-public class CardGameResultDto {
+public class NumberGameResultDto {
     private int stage;
 }

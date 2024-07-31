@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class CardGameResultResponseDto {
+public class NumberGameResultResponseDto {
     private Long id;
     private int stage;
     private LocalDate date;
