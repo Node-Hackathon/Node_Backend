@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class SurveyServiceImpl implements SurveyService {
@@ -22,5 +23,9 @@ public class SurveyServiceImpl implements SurveyService {
     public Survey createSurvey(Survey survey) {
         survey.setDate(LocalDate.now());
         return surveyRepository.save(survey);
+    }
+    @Override
+    public List<Survey> getSurveysByUserId(Long userId) {
+        return surveyRepository.findByUserId(userId);
     }
 }
