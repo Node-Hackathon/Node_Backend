@@ -181,6 +181,20 @@ public class SignServiceImpl implements SignService {
         return signInResultDto;
     }
 
+    @Override
+    public void SignSecession(HttpServletRequest request) throws Exception {
+        String phoneNum = jwtProvider.getUsername(request.getHeader("X-AUTH-TOKEN"));
+        User user = userRepository.findByPhoneNum(phoneNum);
+
+        if (user == null) {
+            logger.error("User not found for phone number: {}", phoneNum);
+            throw new RuntimeException("User not found");
+        }
+
+        logger.info("user {}:", user);
+        signDao.deleteUser(user.getPhoneNum());
+    }
+
     private void setSuccess(SignUpResultDto signUpResultDto) {
         signUpResultDto.setSuccess(true);
         signUpResultDto.setCode(CommonResponse.SUCCESS.getCode());

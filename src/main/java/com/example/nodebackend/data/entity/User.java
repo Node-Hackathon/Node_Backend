@@ -68,7 +68,7 @@ public class User implements UserDetails {
     private MultipartFile profile_image; // 이미지 파일을 업로드하기 위한 필드
 
     @Column(nullable = true)
-    private String profile_image_url; // 이미지 파일의 경로를 저장하는 필드
+    private String profile_image_url ; // 이미지 파일의 경로를 저장하는 필드
 
     @Column(name="CREATED_AT")
     private LocalDateTime createdAt;

@@ -4,7 +4,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Data
+import javax.annotation.Nullable;
+
+
 @Getter
 @Setter
 public class SignUpGuardianInfoDto {

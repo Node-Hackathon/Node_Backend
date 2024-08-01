@@ -18,5 +18,6 @@ public interface SignService {
 
     SignInResultDto SignIn(String userId, String password);
 
+    void SignSecession(HttpServletRequest request)throws Exception;
 
 }
