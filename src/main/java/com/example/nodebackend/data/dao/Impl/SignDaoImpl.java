@@ -6,6 +6,9 @@ import com.example.nodebackend.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+
 @Service
 @RequiredArgsConstructor
 public class SignDaoImpl implements SignDao {
@@ -18,4 +21,16 @@ public class SignDaoImpl implements SignDao {
         return signUpUser;
     }
 
+    @Override
+    public void deleteUser(String phoneNum) throws Exception{
+        User selectUser = userRepository.findByPhoneNum(phoneNum);
+
+        if(selectUser!=null){
+
+            userRepository.delete(selectUser);
+        }else{
+            throw new Exception();
+
+        }
+    }
 }

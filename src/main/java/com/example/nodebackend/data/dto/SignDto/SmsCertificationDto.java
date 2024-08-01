@@ -1,5 +1,6 @@
 package com.example.nodebackend.data.dto.SignDto;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 
 @Getter
@@ -8,6 +9,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SmsCertificationDto {
+
     private String phone_num;
+
+
     private String certification_num;
+
 }

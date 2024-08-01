@@ -6,6 +6,7 @@ import com.example.nodebackend.data.dto.SignDto.SignUpUserInfoDto;
 import com.example.nodebackend.data.dto.SignDto.SignUpResultDto;
 import com.example.nodebackend.service.SignService;
 import com.example.nodebackend.service.SmsService;
+import io.swagger.annotations.ApiImplicitParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,4 +81,17 @@ public class SignController {
         }
         return ResponseEntity.status(signInResultDto.getCode() == 0 ? HttpStatus.OK : HttpStatus.UNAUTHORIZED).body(signInResultDto);
     }
+
+    @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    @DeleteMapping("/sign-secession")
+    public ResponseEntity<Map<String, String>> SignSecession(HttpServletRequest request) {
+        try {
+            signService.SignSecession(request);
+            return ResponseEntity.ok(Map.of("message", "회원 탈퇴 완료"));
+        } catch (Exception e) {
+            logger.error("회원 탈퇴 실패: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "회원 탈퇴 실패"));
+        }
+    }
+
 }
