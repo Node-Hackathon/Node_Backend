@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/survey-api")
@@ -61,5 +63,28 @@ public class SurveyController {
         responseDto.setUserId(savedSurvey.getUser().getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+    @GetMapping("/result-list")
+    @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    public ResponseEntity<List<SurveyResponseDto>> getSurveyResults(HttpServletRequest request) {
+        String token = request.getHeader("X-AUTH-TOKEN");
+        String phoneNum = jwtProvider.getUsername(token);
+        User user = userRepository.findByPhoneNum(phoneNum);
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        List<Survey> surveys = surveyService.getSurveysByUserId(user.getId());
+        List<SurveyResponseDto> responseDtos = surveys.stream().map(survey -> {
+            SurveyResponseDto dto = new SurveyResponseDto();
+            dto.setId(survey.getId());
+            dto.setScore(survey.getScore());
+            dto.setDate(survey.getDate());
+            dto.setUserId(survey.getUser().getId());
+            return dto;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDtos);
     }
 }
