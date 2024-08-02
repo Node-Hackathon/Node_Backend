@@ -3,6 +3,7 @@ package com.example.nodebackend.service.Impl;
 import com.example.nodebackend.S3.S3Uploader;
 import com.example.nodebackend.data.dao.CompositionDao;
 import com.example.nodebackend.data.dto.CompositionDto.CompositionResponseDto;
+import com.example.nodebackend.data.dto.CompositionDto.CompositionResultResponseDto;
 import com.example.nodebackend.data.entity.Composition;
 import com.example.nodebackend.data.entity.User;
 import com.example.nodebackend.data.repository.CompositionRepository;
@@ -23,7 +24,7 @@ import reactor.core.publisher.Mono;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -111,7 +112,7 @@ public class CompositionServiceImpl implements ComposistionService {
                 Composition composition = new Composition();
                 composition.setComposition_imageUrl(compositionResponseDto.getImage_url());
                 composition.setUser(user);
-                composition.setCreatedAT(LocalDateTime.now());
+                composition.setCreatedAT(LocalDate.now());
 
                 compositionDao.save(composition);
                 logger.info("Saved Composition {} : ",composition);
@@ -121,5 +122,18 @@ public class CompositionServiceImpl implements ComposistionService {
         }
 
         return compositionResponseDto;
+    }
+
+    @Override
+    public List<CompositionResultResponseDto> getCompositionResultList(HttpServletRequest request) {
+        String info = jwtProvider.getUsername(request.getHeader("X-AUTH-TOKEN"));
+        User user = userRepository.findByPhoneNum(info);
+
+        Long userId = user.getId();
+
+        List <CompositionResultResponseDto> compositionResultResponseDtoList = compositionDao.getCompositionResultList(userId);
+
+
+        return compositionResultResponseDtoList;
     }
 }

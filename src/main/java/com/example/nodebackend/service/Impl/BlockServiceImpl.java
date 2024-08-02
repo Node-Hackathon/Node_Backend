@@ -4,6 +4,7 @@ import com.example.nodebackend.S3.S3Uploader;
 import com.example.nodebackend.data.dao.BlockDao;
 import com.example.nodebackend.data.dto.BlockDto.BlockDto;
 import com.example.nodebackend.data.dto.BlockDto.BlockResponseDto;
+import com.example.nodebackend.data.dto.BlockDto.BlockResultReponseDto;
 import com.example.nodebackend.data.entity.Block;
 import com.example.nodebackend.data.entity.User;
 import com.example.nodebackend.data.repository.BlockRepository;
@@ -22,7 +23,7 @@ import reactor.core.publisher.Mono;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -109,7 +110,7 @@ public class BlockServiceImpl implements BlockService {
                 block.setImage_Url(blockResponseDto.getImageUrl());
                 block.setUser(user);
                 block.setCount(blockResponseDto.getCount());
-                block.setCreatedAt(LocalDateTime.now());
+                block.setCreatedAt(LocalDate.now());
 
                 blockDao.saveBlock(block);
                 logger.info("Saved Block: {}", block);
@@ -120,5 +121,17 @@ public class BlockServiceImpl implements BlockService {
         }
 
         return blockResponseDto;
+    }
+
+    @Override
+    public List<BlockResultReponseDto> getBlockResultImageList(HttpServletRequest request) {
+        String info  = jwtProvider.getUsername(request.getHeader("X-AUTH-TOKEN"));
+        User user = userRepository.findByPhoneNum(info);
+        Long userId = user.getId();
+
+        List <BlockResultReponseDto> blockResultReponseDtos = blockDao.getBlockResultImageList(userId);
+
+
+        return blockResultReponseDtos;
     }
 }
