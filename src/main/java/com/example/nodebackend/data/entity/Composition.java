@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,6 +29,6 @@ public class Composition {
     private User user;
 
     @Column(name = "CREATED_AT")
-    private LocalDateTime createdAT;
+    private LocalDate createdAT;
 
 }

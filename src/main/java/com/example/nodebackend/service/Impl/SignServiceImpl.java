@@ -21,7 +21,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Service
-public class SignServiceImpl implements SignService {
+public class
+SignServiceImpl implements SignService {
 
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
