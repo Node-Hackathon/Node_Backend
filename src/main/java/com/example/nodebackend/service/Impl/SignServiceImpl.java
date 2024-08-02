@@ -190,6 +190,7 @@ public class SignServiceImpl implements SignService {
     @Override
     public void SignSecession(HttpServletRequest request) throws Exception {
         String phoneNum = jwtProvider.getUsername(request.getHeader("X-AUTH-TOKEN"));
+
         User user = userRepository.findByPhoneNum(phoneNum);
 
         if (user == null) {
