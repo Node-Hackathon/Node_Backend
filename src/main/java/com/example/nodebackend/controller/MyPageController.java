@@ -8,7 +8,9 @@ import com.example.nodebackend.jwt.JwtProvider;
 import com.example.nodebackend.mapper.MyPageGuardianMapper;
 import com.example.nodebackend.mapper.MyPageUserMapper;
 import com.example.nodebackend.service.MyPageUserService;
+import io.jsonwebtoken.Jwt;
 import io.swagger.annotations.ApiImplicitParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,16 +21,13 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/mypage-api")
+@RequiredArgsConstructor
 public class MyPageController {
 
-    @Autowired
-    private MyPageUserService myPageUserService;
+    private final MyPageUserService myPageUserService;
+    private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private JwtProvider jwtProvider;
 
     @GetMapping("/mypage-inquiry") // 유저 정보 조회
     @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
