@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -35,7 +35,7 @@ public class Block {
     private User user;
 
     @Column(name="CREATED_AT")
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
 
 }

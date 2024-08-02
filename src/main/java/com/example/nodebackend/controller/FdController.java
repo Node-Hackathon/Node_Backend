@@ -1,9 +1,7 @@
-package com.example.nodebackend.controller;
+package com.springboot.jpa_8;
 
 import com.example.nodebackend.data.dto.BlockDto.BlockResponseDto;
 import com.example.nodebackend.data.dto.CompositionDto.CompositionResponseDto;
-import com.example.nodebackend.service.BlockService;
-import com.example.nodebackend.service.ComposistionService;
 import io.swagger.annotations.ApiImplicitParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -42,6 +41,16 @@ public class FdController {
     }
 
     @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    @GetMapping ("/block-result")
+    public ResponseEntity<List<BlockResultReponseDto>> BlockResult(HttpServletRequest request) {
+        List<BlockResultReponseDto> blockResultReponseDtos = blockService.getBlockResultImageList(request);
+        return ResponseEntity.status(HttpStatus.OK).body(blockResultReponseDtos);
+    }
+
+
+
+
+    @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     @PostMapping("/composition")
     public ResponseEntity<CompositionResponseDto> CompositionPlay(
             @RequestPart("composition_image") MultipartFile composition_image, HttpServletRequest request) throws IOException {
@@ -49,6 +58,13 @@ public class FdController {
         CompositionResponseDto compositionResponseDto = composistionService.CompositionPlay(composition_image, request);
         return ResponseEntity.status(HttpStatus.OK).body(compositionResponseDto);
 
+    }
+
+    @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    @GetMapping ("/composition-result")
+    public ResponseEntity<List<CompositionResultResponseDto>> CompositionResult(HttpServletRequest request) {
+        List<CompositionResultResponseDto> compositionResultResponseDtos = composistionService.getCompositionResultList(request);
+        return ResponseEntity.status(HttpStatus.OK).body(compositionResultResponseDtos);
     }
 
     @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
