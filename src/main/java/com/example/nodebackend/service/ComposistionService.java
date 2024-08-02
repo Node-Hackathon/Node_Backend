@@ -1,6 +1,7 @@
 package com.example.nodebackend.service;
 
 import com.example.nodebackend.data.dto.CompositionDto.CompositionResponseDto;
+import com.example.nodebackend.data.dto.CompositionDto.CompositionResultResponseDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;

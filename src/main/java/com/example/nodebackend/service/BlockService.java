@@ -1,6 +1,7 @@
 package com.example.nodebackend.service;
 
 import com.example.nodebackend.data.dto.BlockDto.BlockResponseDto;
+import com.example.nodebackend.data.dto.BlockDto.BlockResultReponseDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
