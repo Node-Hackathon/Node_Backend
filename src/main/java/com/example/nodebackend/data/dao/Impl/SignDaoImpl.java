@@ -26,7 +26,6 @@ public class SignDaoImpl implements SignDao {
         User selectUser = userRepository.findByPhoneNum(phoneNum);
 
         if(selectUser!=null){
-
             userRepository.delete(selectUser);
         }else{
             throw new Exception();
