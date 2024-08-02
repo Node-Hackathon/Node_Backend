@@ -147,9 +147,15 @@ public class SignServiceImpl implements SignService {
 
         if (partialUser != null) {
             // 기존 partialUser 업데이트
-            partialUser.setGuardian_name(signUpGuardianInfoDto.getGuardian_name());
-            partialUser.setGuardian_phone_num(signUpGuardianInfoDto.getGuardian_phone_num());
-            partialUser.setGuardian_address(signUpGuardianInfoDto.getGuardian_address());
+            if (signUpGuardianInfoDto.getGuardian_name() != null) {
+                partialUser.setGuardian_name(signUpGuardianInfoDto.getGuardian_name());
+            }
+            if (signUpGuardianInfoDto.getGuardian_phone_num() != null) {
+                partialUser.setGuardian_phone_num(signUpGuardianInfoDto.getGuardian_phone_num());
+            }
+            if (signUpGuardianInfoDto.getGuardian_address() != null) {
+                partialUser.setGuardian_address(signUpGuardianInfoDto.getGuardian_address());
+            }
             partialUser.setCreatedAt(LocalDateTime.now());
 
             signDao.SignUp(partialUser);

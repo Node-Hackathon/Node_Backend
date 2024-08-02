@@ -90,7 +90,7 @@ public class User implements UserDetails {
     private List<CardGameResult> cardGameResults = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CardGameResult> NumberGameResults = new ArrayList<>();
+    private List<NumberGameResult> NumberGameResults = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
