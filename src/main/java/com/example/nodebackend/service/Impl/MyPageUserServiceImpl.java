@@ -39,7 +39,7 @@ public class MyPageUserServiceImpl implements MyPageUserService{
             userRepository.save(user);
             return MyPageUserMapper.toDto(user);
         }
-        return null; // 혹은 custom 예외 발생
+        return null;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class MyPageUserServiceImpl implements MyPageUserService{
             userRepository.save(user);
             return MyPageGuardianMapper.toDto(user);
         }
-        return null; // 혹은 custom 예외 발생
+        return null;
     }
 
 }
