@@ -13,4 +13,5 @@ public interface MyPageUserService {
     MyPageUserDto updateUser(Long id, MyPageUserDto userDto);
     MyPageGuardianDto updateGuardian(Long id, MyPageGuardianDto guardianDto);
     MyPageUserDto updateProfileImage(Long id, MultipartFile profileImage) throws IOException;
+
 }

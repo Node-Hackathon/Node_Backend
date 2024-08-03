@@ -3,6 +3,7 @@ package com.example.nodebackend.data.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -25,4 +26,5 @@ public class DiaryAnswer {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private DiaryQuestion question;
+
 }
