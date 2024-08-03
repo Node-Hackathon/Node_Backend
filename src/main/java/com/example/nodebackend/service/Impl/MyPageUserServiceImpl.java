@@ -33,13 +33,27 @@ public class MyPageUserServiceImpl implements MyPageUserService {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            user.setName(userDto.getName());
-            user.setGender(userDto.getGender());
-            user.setBirth(userDto.getBirth());
-            user.setHeight(userDto.getHeight());
-            user.setWeight(userDto.getWeight());
-            user.setAddress(userDto.getAddress());
-            user.setPhoneNum(userDto.getPhoneNum());
+            if (userDto.getName() != null) {
+                user.setName(userDto.getName());
+            }
+            if (userDto.getGender() != null) {
+                user.setGender(userDto.getGender());
+            }
+            if (userDto.getBirth() != null) {
+                user.setBirth(userDto.getBirth());
+            }
+            if (userDto.getHeight() != 0) {
+                user.setHeight(userDto.getHeight());
+            }
+            if (userDto.getWeight() != 0) {
+                user.setWeight(userDto.getWeight());
+            }
+            if (userDto.getAddress() != null) {
+                user.setAddress(userDto.getAddress());
+            }
+            if (userDto.getPhoneNum() != null) {
+                user.setPhoneNum(userDto.getPhoneNum());
+            }
 
             userRepository.save(user);
             return MyPageUserMapper.toDto(user);
