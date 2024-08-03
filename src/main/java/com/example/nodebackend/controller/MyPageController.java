@@ -12,6 +12,7 @@ import io.jsonwebtoken.Jwt;
 import io.swagger.annotations.ApiImplicitParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -99,7 +100,7 @@ public class MyPageController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/guardian-update") // 보호자 정보 수정
+    @PutMapping("/guardian-update")
     @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     public ResponseEntity<MyPageGuardianDto> updateGuardian(HttpServletRequest request, @RequestBody MyPageGuardianDto myPageGuardianDto) {
         String username = jwtProvider.getUsername(request.getHeader("X-AUTH-TOKEN"));
@@ -109,11 +110,7 @@ public class MyPageController {
             return ResponseEntity.notFound().build();
         }
 
-        user.setGuardian_name(myPageGuardianDto.getGuardian_name());
-        user.setGuardian_phone_num(myPageGuardianDto.getGuardian_phone_num());
-        user.setGuardian_address(myPageGuardianDto.getGuardian_address());
-
-        userRepository.save(user);
-        return ResponseEntity.ok(MyPageGuardianMapper.toDto(user));
+        MyPageGuardianDto updatedGuardian = myPageUserService.updateGuardian(user.getId(), myPageGuardianDto);
+        return ResponseEntity.ok(updatedGuardian);
     }
 }
