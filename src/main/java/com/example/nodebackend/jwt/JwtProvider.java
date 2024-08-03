@@ -112,13 +112,4 @@ public class JwtProvider {
 
         }
     }
-    // 토큰에서 사용자 ID를 추출
-    public Long getUserId(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(secretKey) // 비밀키
-                .parseClaimsJws(token)
-                .getBody();
-        return claims.get("userId", Long.class); // 사용자 ID가 "userId"라는 클레임에 저장되어 있다고 가정
-    }
-
 }

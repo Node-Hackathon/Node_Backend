@@ -88,7 +88,7 @@ SignServiceImpl implements SignService {
             partialUser.setBirth(signUpUserInfoDto.getBirth());
             partialUser.setGender(signUpUserInfoDto.getGender());
             partialUser.setHeight(signUpUserInfoDto.getHeight());
-            partialUser.setWeight(signUpUserInfoDto.getHeight());
+            partialUser.setWeight(signUpUserInfoDto.getWeight());
 
             logger.info("[user 정보 입력] : {} ", partialUser);
 

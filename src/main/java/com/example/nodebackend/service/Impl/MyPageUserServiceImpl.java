@@ -69,9 +69,15 @@ public class MyPageUserServiceImpl implements MyPageUserService {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            user.setGuardian_name(guardianDto.getGuardian_name());
-            user.setGuardian_phone_num(guardianDto.getGuardian_phone_num());
-            user.setGuardian_address(guardianDto.getGuardian_address());
+            if(guardianDto.getGuardian_name() != null){
+                user.setGuardian_name(guardianDto.getGuardian_name());
+            }
+            if(guardianDto.getGuardian_phone_num() != null){
+                user.setGuardian_phone_num(guardianDto.getGuardian_phone_num());
+            }
+            if(guardianDto.getGuardian_address() != null){
+                user.setGuardian_address(guardianDto.getGuardian_address());
+            }
 
             userRepository.save(user);
             return MyPageGuardianMapper.toDto(user);
