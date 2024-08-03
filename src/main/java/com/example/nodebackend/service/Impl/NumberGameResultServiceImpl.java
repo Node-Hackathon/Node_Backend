@@ -92,8 +92,8 @@ public class NumberGameResultServiceImpl implements NumberGameResultService {
                 .limit(2)
                 .collect(Collectors.toList());
 
-        if (recentResults.size() < 1) {
-            response.put("message", "");
+        if (recentResults.size() < 2) {
+            response.put("message", "비교할 이전 결과가 충분하지 않습니다.");
             return objectMapper.writeValueAsString(response);
         }
 
