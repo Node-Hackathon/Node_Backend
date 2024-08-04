@@ -24,26 +24,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected  void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                     FilterChain filterChain)
-            throws ServletException, IOException{
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         String token = jwtProvider.resolveToken(request);
-        System.out.println(token);
+        logger.info("[doFilterInternal] token 값 추출 완료. token: {}", token);
 
-        logger.info("[dofilterInternal] token 값 추출 완료. token : {} " , token);
-
-        logger.info("[dofilterInternal] token 값 추출 체크 시작" );
-
-        if(token!=null && jwtProvider.validToken(token)){
-            Authentication authentication = jwtProvider.getAuthentication(token);
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            logger.info("[dofilterInternal] token 값 유효성 체크 완료");
+        if (token != null && jwtProvider.validToken(token)) {
+            try {
+                Authentication authentication = jwtProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                logger.info("[doFilterInternal] token 값 유효성 체크 완료");
+            } catch (Exception e) {
+                logger.error("[doFilterInternal] 인증 과정에서 오류 발생: {}", e.getMessage());
+            }
+        } else {
+            logger.warn("[doFilterInternal] 유효하지 않은 token: {}", token);
         }
-        filterChain.doFilter(request,response);
 
-
+        filterChain.doFilter(request, response);
     }
+
 
 
 

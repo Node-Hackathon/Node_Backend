@@ -39,7 +39,7 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public List<Diary> getDiaryByUserId(Long userId) {
-        return diaryRepository.findByUserId(userId);
+        return diaryRepository.findAllByUserId(userId);
     }
 
     @Override
@@ -96,22 +96,28 @@ public class DiaryServiceImpl implements DiaryService {
         String phoneNum = jwtProvider.getUsername(token);
         User user = userRepository.findByPhoneNum(phoneNum);
 
-        LocalDate today = LocalDate.now();
-        List<Diary> diaryList = getDiaryByUserIdAndDate(user.getId(), today);
+        // 모든 일기를 가져오기 위해 메서드 수정
+        List<Diary> diaryList = getDiaryByUserId(user.getId());
         List<DiaryResponseDto> responseDtoList = diaryList.stream().map(diary -> {
             DiaryResponseDto responseDto = new DiaryResponseDto();
             responseDto.setId(diary.getId());
             responseDto.setDate(diary.getDate());
             responseDto.setUserId(diary.getUser().getId());
-            responseDto.setAnswer1(diary.getDiaryAnswers().get(0).getAnswer());
-            responseDto.setAnswer2(diary.getDiaryAnswers().get(1).getAnswer());
-            responseDto.setAnswer3(diary.getDiaryAnswers().get(2).getAnswer());
-            responseDto.setAnswer4(diary.getDiaryAnswers().get(3).getAnswer());
-            responseDto.setAnswer5(diary.getDiaryAnswers().get(4).getAnswer());
+            List<DiaryAnswer> answers = diary.getDiaryAnswers();
+            if (answers.size() >= 5) {
+                responseDto.setAnswer1(answers.get(0).getAnswer());
+                responseDto.setAnswer2(answers.get(1).getAnswer());
+                responseDto.setAnswer3(answers.get(2).getAnswer());
+                responseDto.setAnswer4(answers.get(3).getAnswer());
+                responseDto.setAnswer5(answers.get(4).getAnswer());
+            }
             return responseDto;
         }).collect(Collectors.toList());
         return responseDtoList;
     }
+
+
+
     @Override
     public boolean hasDiaryForToday(HttpServletRequest request) {
         String token = request.getHeader("X-AUTH-TOKEN");

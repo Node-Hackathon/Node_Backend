@@ -201,6 +201,7 @@ SignServiceImpl implements SignService {
 
         logger.info("user {}:", user);
         signDao.deleteUser(user.getPhoneNum());
+        request.getSession().invalidate();
     }
 
     private void setSuccess(SignUpResultDto signUpResultDto) {
