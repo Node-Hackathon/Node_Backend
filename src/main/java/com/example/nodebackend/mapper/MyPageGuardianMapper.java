@@ -2,7 +2,7 @@ package com.example.nodebackend.mapper;
 
 import com.example.nodebackend.data.dto.MyPageDto.MyPageGuardianDto;
 import com.example.nodebackend.data.entity.User;
-
+//유저 정보 조회 mapper
 public class MyPageGuardianMapper {
     public static MyPageGuardianDto toDto(User user) {
         if (user == null) {
