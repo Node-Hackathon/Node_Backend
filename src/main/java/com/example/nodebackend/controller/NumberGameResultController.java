@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/numbergame-api")
+@RequestMapping("/api/numbergame-api")
 public class NumberGameResultController {
     private final NumberGameResultService numberGameResultService;
 

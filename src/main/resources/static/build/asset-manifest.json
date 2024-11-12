@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.1eec203c.css",
+    "main.js": "/static/js/main.89c24a3e.js",
+    "static/media/composition.svg": "/static/media/composition.29614ffa4db63f5a40810282ba839ebd.svg",
+    "static/media/block2.png": "/static/media/block2.549ffb44b3e86f581363.png",
+    "static/media/block4.png": "/static/media/block4.ef1e8a8bf740f21a59ac.png",
+    "static/media/number.png": "/static/media/number.337c5533eada404459ca.png",
+    "static/media/block3.png": "/static/media/block3.5c5885029e6b9f4a46a7.png",
+    "static/media/HandShake.png": "/static/media/HandShake.e4a4cb7c44b6d92acd0e.png",
+    "static/media/composition1.png": "/static/media/composition1.8216936774db0b6b774e.png",
+    "static/media/block1.png": "/static/media/block1.711951c0dd2eba2462c3.png",
+    "static/media/MainBanner.png": "/static/media/MainBanner.64b749764deb6c2ab023.png",
+    "static/media/card2.png": "/static/media/card2.0fcee6f6a85fe12c6324.png",
+    "static/media/Logo-s.svg": "/static/media/Logo-s.23ea7eb5d1b8b81609ff05d51283b87d.svg",
+    "static/media/Logo.svg": "/static/media/Logo.bdc19b79d23c553fceaa0ba8545b523e.svg",
+    "static/media/Logo-M.svg": "/static/media/Logo-M.fcb4d40973e9823f2f3d5259c94576a5.svg",
+    "static/media/CheckBox-after.svg": "/static/media/CheckBox-after.d6cde39ca50a0b2672d5134bcc916293.svg",
+    "index.html": "/index.html",
+    "static/media/CheckBox-before.svg": "/static/media/CheckBox-before.c21093e8f1da4c7050596fa131b70e54.svg",
+    "main.1eec203c.css.map": "/static/css/main.1eec203c.css.map",
+    "main.89c24a3e.js.map": "/static/js/main.89c24a3e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1eec203c.css",
+    "static/js/main.89c24a3e.js"
+  ]
+}

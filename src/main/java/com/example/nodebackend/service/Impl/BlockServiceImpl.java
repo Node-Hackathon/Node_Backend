@@ -43,7 +43,7 @@ public class BlockServiceImpl implements BlockService {
         this.s3Uploader = s3Uploader;
         this.jwtProvider = jwtProvider;
         this.blockRepository = blockRepository;
-        this.webClient = webClientBuilder.baseUrl("http://43.203.212.168:8000").build();
+        this.webClient = webClientBuilder.baseUrl("http://43.203.118.158:8000").build();
         this.blockDao = blockDao;
         this.userRepository = userRepository;
     }
@@ -86,7 +86,7 @@ public class BlockServiceImpl implements BlockService {
         BlockResponseDto blockResponseDto = null;
 
         try {
-            String imageUrl = s3Uploader.uploadImage(blockImage, "images/block");
+            String imageUrl = s3Uploader.uploadImage(blockImage, "image");
             Map<String, String> requestBody = new HashMap<>();
             requestBody.put("image_url", imageUrl);
 

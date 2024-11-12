@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/diary-question-api")
+@RequestMapping("/api/diary-question-api")
 public class DiaryQuestionController {
 
     private final DiaryQuestionService diaryQuestionService;

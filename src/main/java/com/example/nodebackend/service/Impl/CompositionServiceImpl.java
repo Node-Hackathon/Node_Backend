@@ -56,7 +56,7 @@ public class CompositionServiceImpl implements ComposistionService {
         this.compositionRepository = compositionRepository;
         this.userRepository = userRepository;
         this.compositionDao = compositionDao;
-        this.webClient = webClientBuilder.baseUrl("http://43.203.212.168:8001").build();
+        this.webClient = webClientBuilder.baseUrl("http://43.203.118.158:8001").build();
     }
 
     public static final List<String> compositionSentences = new ArrayList<>();
@@ -94,7 +94,7 @@ public class CompositionServiceImpl implements ComposistionService {
         CompositionResponseDto compositionResponseDto = null;
 
         try{
-            String imageUrl = s3Uploader.uploadImage(composition_image,"image/composition");
+            String imageUrl = s3Uploader.uploadImage(composition_image,"image");
             logger.info("imageUrl {} : ",imageUrl);
 
             Mono<CompositionResponseDto> response = webClient.post()

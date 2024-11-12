@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/survey-api")
+@RequestMapping("/api/survey-api")
 public class SurveyController {
 
     private final Logger logger = LoggerFactory.getLogger(SurveyController.class);

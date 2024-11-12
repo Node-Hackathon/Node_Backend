@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cardgame-api")
+@RequestMapping("/api/cardgame-api")
 public class CardGameResultController {
     private final CardGameResultService cardGameResultService;
 

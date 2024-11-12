@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/center-api")
+@RequestMapping("/api/center-api")
 
 public class CenterController {
 

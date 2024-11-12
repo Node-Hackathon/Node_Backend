@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/sign-api")
+@RequestMapping("/api/sign-api")
 public class SignController {
 
     private final Logger logger = LoggerFactory.getLogger(SignController.class);
