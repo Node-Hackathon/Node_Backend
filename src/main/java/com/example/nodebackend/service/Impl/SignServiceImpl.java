@@ -121,7 +121,7 @@ SignServiceImpl implements SignService {
             return signUpResultDto;
         }
 
-        String imageUrl = s3Uploader.uploadImage(profile_image, "image/profile/");
+        String imageUrl = s3Uploader.uploadImage(profile_image, "image");
 
         if (partialUser != null) {
             // 기존 partialUser 업데이트
