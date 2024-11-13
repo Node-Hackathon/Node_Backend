@@ -5,6 +5,8 @@ FROM openjdk:11-jre-slim
 WORKDIR /app
 
 # 3. 빌드된 JAR 파일을 컨테이너로 복사
+RUN echo "Checking target directory contents:" && ls -al /app/target
+
 COPY target/NodeBackend-0.0.1-SNAPSHOT.jar app.jar
 
 # 4. 포트 설정 (Spring Boot의 기본 포트)
