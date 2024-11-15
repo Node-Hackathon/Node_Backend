@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/diary-api")
+@RequestMapping("/api/diary-api")
 public class DiaryController {
 
     private final Logger logger = LoggerFactory.getLogger(DiaryController.class);

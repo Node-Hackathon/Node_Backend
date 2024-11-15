@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/4d-api")
+@RequestMapping("/api/4d-api")
 @RequiredArgsConstructor
 public class FdController {
 

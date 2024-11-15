@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/mypage-api")
+@RequestMapping("/api/mypage-api")
 @RequiredArgsConstructor
 public class MyPageController {
 
