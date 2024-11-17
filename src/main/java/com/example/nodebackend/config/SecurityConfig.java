@@ -46,7 +46,7 @@ public class SecurityConfig extends  WebSecurityConfigurerAdapter{
                 .cors()
                 .and()
                 .authorizeRequests() // 리퀘스트에 대한 사용권한 체크
-                .antMatchers("/sign-api/**",
+                .antMatchers("/api/sign-api/**",
                         "/sign-api/exception","/main-api/**").permitAll() // 가입 및 로그인 주소는 허용
                 .antMatchers("/4d-api/**").authenticated()
                 .antMatchers("/center-api/**").authenticated()
