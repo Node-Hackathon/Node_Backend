@@ -8,6 +8,7 @@ import com.example.nodebackend.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -46,13 +47,14 @@ public class SecurityConfig extends  WebSecurityConfigurerAdapter{
                 .cors()
                 .and()
                 .authorizeRequests() // 리퀘스트에 대한 사용권한 체크
+                .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()
                 .antMatchers("/api/sign-api/**",
-                        "/sign-api/exception","/main-api/**").permitAll() // 가입 및 로그인 주소는 허용
-                .antMatchers("/4d-api/**").authenticated()
-                .antMatchers("/center-api/**").authenticated()
-                .antMatchers("/mypage-api/**").authenticated()
-                .antMatchers("/cardgame-api/**").authenticated()
-                .antMatchers("/numbergame-api/**").authenticated()
+                        "/api/sign-api/exception","/api/main-api/**").permitAll() // 가입 및 로그인 주소는 허용
+                .antMatchers("/api/4d-api/**").authenticated()
+                .antMatchers("/api/center-api/**").authenticated()
+                .antMatchers("/api/mypage-api/**").authenticated()
+                .antMatchers("/api/cardgame-api/**").authenticated()
+                .antMatchers("/api/numbergame-api/**").authenticated()
                 .antMatchers("**exception**").permitAll()
                 .and()
                 .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
